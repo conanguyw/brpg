@@ -22,7 +22,7 @@ import java.util.Date;
  */
 @Controller
 @EnableAutoConfiguration
-
+@EnableCaching
 public class WeChatController {
     private static String token     = "siteguywtoken";
     private static String appId     = "wx322a6bd51d1db0f5";
