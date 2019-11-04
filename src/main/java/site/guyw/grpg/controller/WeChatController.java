@@ -25,9 +25,9 @@ import java.util.Date;
 @EnableAutoConfiguration
 @EnableCaching
 public class WeChatController {
-    private static String token     = "siteguywtoken";
-    private static String appId     = "wx322a6bd51d1db0f5";
-    private static String appSecret = "f900a01969566f1e219d01445a3913cc";
+    private static String                 token     = "siteguywtoken";
+    private static String                 appId     = "wx322a6bd51d1db0f5";
+    private static String                 appSecret = "f900a01969566f1e219d01445a3913cc";
 
     /** 服务网关提供商 */
     @Resource
@@ -48,8 +48,6 @@ public class WeChatController {
         return "hello";
     }
 
-
-
     /**
      * 微信消息处理
      */
@@ -57,10 +55,10 @@ public class WeChatController {
     @ResponseBody
     public OutMsgEntity handleMessage(@RequestBody InMsgEntity msg) {
 
-//获取接收的消息类型
+        //获取接收的消息类型
 
-        DealWeChatMessageService messageService =gatewayServiceProvider.getService(WeChatMsgTypeEnum.getEnumByCode(msg.getMsgType()));
-        return  messageService.invoke(msg);
+        DealWeChatMessageService messageService = gatewayServiceProvider.getService(WeChatMsgTypeEnum.getEnumByCode(msg.getMsgType()));
+        return messageService.invoke(msg);
 
     }
 
