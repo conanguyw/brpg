@@ -3,7 +3,7 @@ package site.guyw.grpg.service;
 import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-import site.guyw.grpg.HttpUtils;
+//import site.guyw.grpg.HttpUtils;
 import site.guyw.grpg.common.AccessTokenResp;
 
 /**
@@ -23,14 +23,14 @@ public class AccessTokenService {
             accessToken = null;
         }
         if (StringUtils.isBlank(accessToken)){
-            AccessTokenResp accessTokenResp;
-            String res = HttpUtils.get(accessTokenUrl);
-            System.out.println(res);
-            accessTokenResp  = JSON.parseObject(res,AccessTokenResp.class);
-            accessToken = accessTokenResp.getAccess_token();
-            if (StringUtils.isNotBlank(accessToken)){
-                time = System.currentTimeMillis() + accessTokenResp.getExpires_in()*1000;
-            }
+//            AccessTokenResp accessTokenResp;
+//            String res = HttpUtils.get(accessTokenUrl);
+//            System.out.println(res);
+//            accessTokenResp  = JSON.parseObject(res,AccessTokenResp.class);
+//            accessToken = accessTokenResp.getAccess_token();
+//            if (StringUtils.isNotBlank(accessToken)){
+//                time = System.currentTimeMillis() + accessTokenResp.getExpires_in()*1000;
+//            }
         }
         return accessToken;
     }

@@ -1,12 +1,15 @@
 package site.guyw.grpg;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import site.guyw.grpg.cache.PersonRepository;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,12 +25,13 @@ import java.security.NoSuchAlgorithmException;
  */
 @Controller
 @EnableAutoConfiguration
-
+@EnableCaching
 public class WeiXinToken {
     private static String token     = "siteguywtoken";
     private static String appId     = "wx322a6bd51d1db0f5";
     private static String appSecret = "f900a01969566f1e219d01445a3913cc";
-
+@Autowired
+private PersonRepository personRepository;
 
     //设置访问的url
     @RequestMapping(value = "/token", method = RequestMethod.GET)
@@ -43,7 +47,13 @@ public class WeiXinToken {
 
         return "hello";
     }
-
+    //设置访问的url
+    @RequestMapping(value = "/person", method = RequestMethod.GET)
+    //表示返回JSON格式的结果，如果前面使用的是@RestController可以不用写
+    @ResponseBody
+    public String person(@RequestParam("openid") String openid) {
+       return personRepository.getPersonByOpenid(openid).getNickName();
+    }
     public static void main(String[] args) throws Exception {
         //通过SpringApplication的run()方法启动应用，无需额外的配置其他的文件
         SpringApplication.run(WeiXinToken.class, args);
