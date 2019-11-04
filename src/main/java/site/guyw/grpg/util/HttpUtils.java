@@ -2,7 +2,7 @@
  * LY.com Inc.
  * Copyright (c) 2004-2019 All Rights Reserved.
  */
-package site.guyw.grpg;
+package site.guyw.grpg.util;
 
 import com.alibaba.fastjson.JSON;
 
@@ -29,8 +29,8 @@ import java.util.stream.Collectors;
 /**
  * HttpUtils
  *
- * @author zzq14408
- * @version Id: HttpUtils.java, v 0.1 2019/3/18 16:32 zzq14408 Exp $$
+ * @author
+ * @version Id: HttpUtils.java, v 0.1 2019/3/18 16:32  Exp $$
  */
 public class HttpUtils {
 

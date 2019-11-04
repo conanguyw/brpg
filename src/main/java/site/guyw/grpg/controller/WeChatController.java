@@ -1,19 +1,19 @@
-package site.guyw.grpg;
+package site.guyw.grpg.controller;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import site.guyw.grpg.common.InMsgEntity;
+import site.guyw.grpg.common.OutMsgEntity;
+import site.guyw.grpg.common.WeChatMsgTypeEnum;
+import site.guyw.grpg.manager.gateway.DefaultGatewayServiceProvider;
+import site.guyw.grpg.service.dealMsg.DealWeChatMessageService;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
+import javax.annotation.Resource;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 
 /**
  * @author conangu(顾永威)
@@ -23,14 +23,17 @@ import java.security.NoSuchAlgorithmException;
 @Controller
 @EnableAutoConfiguration
 
-public class WeiXinToken {
+public class WeChatController {
     private static String token     = "siteguywtoken";
     private static String appId     = "wx322a6bd51d1db0f5";
     private static String appSecret = "f900a01969566f1e219d01445a3913cc";
 
+    /** 服务网关提供商 */
+    @Resource
+    private DefaultGatewayServiceProvider gatewayServiceProvider;
 
     //设置访问的url
-    @RequestMapping(value = "/token", method = RequestMethod.GET)
+    @RequestMapping(value = "/brpg", method = RequestMethod.GET)
     //表示返回JSON格式的结果，如果前面使用的是@RestController可以不用写
     @ResponseBody
     public String tokenVerify(@RequestParam("signature") String signature, @RequestParam("timestamp") String timestamp, @RequestParam("nonce") String nonce,
@@ -44,9 +47,25 @@ public class WeiXinToken {
         return "hello";
     }
 
+
+
+    /**
+     * 微信消息处理
+     */
+    @RequestMapping(value = "/brpg", method = RequestMethod.POST)
+    @ResponseBody
+    public OutMsgEntity handleMessage(@RequestBody InMsgEntity msg) {
+
+//获取接收的消息类型
+
+        DealWeChatMessageService messageService =gatewayServiceProvider.getService(WeChatMsgTypeEnum.getEnumByCode(msg.getMsgType()));
+        return  messageService.invoke(msg);
+
+    }
+
     public static void main(String[] args) throws Exception {
         //通过SpringApplication的run()方法启动应用，无需额外的配置其他的文件
-        SpringApplication.run(WeiXinToken.class, args);
+        SpringApplication.run(WeChatController.class, args);
     }
 
     /**

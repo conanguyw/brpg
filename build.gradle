@@ -38,6 +38,7 @@ dependencies {
     implementation group: 'org.projectlombok', name: 'lombok', version: '1.18.10'
     implementation group: 'commons-collections', name: 'commons-collections', version: '3.2.2'
     implementation group: 'javax.ws.rs', name: 'javax.ws.rs-api', version: '2.1.1'
+    implementation group: 'com.google.guava', name: 'guava', version: '28.1-jre'
 
 }
 
