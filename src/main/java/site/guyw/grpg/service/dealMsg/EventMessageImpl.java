@@ -1,5 +1,6 @@
 package site.guyw.grpg.service.dealMsg;
 
+import org.springframework.stereotype.Service;
 import site.guyw.grpg.common.InMsgEntity;
 import site.guyw.grpg.common.OutMsgEntity;
 import site.guyw.grpg.common.WeChatMsgTypeEnum;
@@ -10,6 +11,7 @@ import site.guyw.grpg.manager.annotation.MsgGateway;
  * @createTime 2019-10-12 16:31
  * @description 文本消息处理
  */
+@Service
 @MsgGateway(method = WeChatMsgTypeEnum.EVENT)
 public class EventMessageImpl extends MessageAbstractService implements DealWeChatMessageService{
     @Override

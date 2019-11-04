@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Lists;
@@ -28,7 +29,7 @@ import site.guyw.grpg.util.AopTargetUtils;
 
  * @version $Id : DefaultMsgGatewayServiceProvider.java, v 0.1 2017年1月17日 下午4:45:48  Exp $
  */
-@Service
+@Component
 public class DefaultGatewayServiceProvider implements CommandLineRunner {
     /** logger */
     private static final Logger logger             = LoggerFactory.getLogger(DefaultGatewayServiceProvider.class);
