@@ -2,12 +2,21 @@ package site.guyw.grpg.service.dealMsg;
 
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
+import site.guyw.grpg.cache.Person;
 import site.guyw.grpg.common.InMsgEntity;
 import site.guyw.grpg.common.OutMsgEntity;
-import site.guyw.grpg.common.WeChatMsgTypeEnum;
+import site.guyw.grpg.common.PersonActRequest;
+import site.guyw.grpg.common.PersonActResponse;
+import site.guyw.grpg.enums.PersonStatusEnum;
+import site.guyw.grpg.enums.WeChatMsgTypeEnum;
 import site.guyw.grpg.manager.annotation.MsgGateway;
+import site.guyw.grpg.manager.gateway.DefaultGatewayServiceProvider;
+import site.guyw.grpg.service.personAct.PersonActService;
 
-import java.util.Date;
+import javax.annotation.Resource;
+
+import static site.guyw.grpg.cache.SimpleCache.getCache;
+import static site.guyw.grpg.cache.SimpleCache.setCache;
 
 /**
  * @author conangu(顾永威)
@@ -16,28 +25,29 @@ import java.util.Date;
  */
 @Service
 @MsgGateway(method = WeChatMsgTypeEnum.TEXT)
-public class TextMessageImpl extends MessageAbstractService implements DealWeChatMessageService{
+public class TextMessageImpl extends MessageAbstractService implements DealWeChatMessageService {
+    /** 服务网关提供商 */
+    @Resource
+    private DefaultGatewayServiceProvider gatewayServiceProvider;
+
     @Override
     public OutMsgEntity invoke(InMsgEntity msg) {
         OutMsgEntity out = buildOutMsgEntity(msg);
-        //用户发送的内容
-        String inContent = msg.getContent();
+        String outContent;
+        Person person = getPerson(msg);
+        PersonActService messageService = gatewayServiceProvider.getPersonService(person.getStatus());
+        PersonActRequest request = new PersonActRequest();
+        request.setContent(msg.getContent());
+        PersonActResponse response = messageService.invoke(request);
         //公众号回复的内容
-        String outContent = null;
-        //关键字判断
-        if(inContent.contains("开始")){
-            outContent = "";
-        }else if(inContent.contains("地址")){
-            outContent = "";
-        }else{
-            //用户发什么就回复什么
-            outContent = inContent;
-        }
+        outContent = response.getContent();
+
         //设置消息的响应类型
         out.setMsgType("text");
         out.setContent(outContent);
         return out;
     }
+
 
 
 }

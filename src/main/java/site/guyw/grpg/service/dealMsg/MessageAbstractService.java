@@ -1,9 +1,15 @@
 package site.guyw.grpg.service.dealMsg;
 
+import org.jetbrains.annotations.NotNull;
+import site.guyw.grpg.cache.Person;
 import site.guyw.grpg.common.InMsgEntity;
 import site.guyw.grpg.common.OutMsgEntity;
+import site.guyw.grpg.enums.PersonStatusEnum;
 
 import java.util.Date;
+
+import static site.guyw.grpg.cache.SimpleCache.getCache;
+import static site.guyw.grpg.cache.SimpleCache.setCache;
 
 /**
  * @author conangu(顾永威)
@@ -22,5 +28,15 @@ public abstract class MessageAbstractService {
         //设置消息创建时间
         out.setCreateTime(new Date().getTime());
         return out;
+    }
+
+    public Person getPerson(InMsgEntity msg) {
+        Person person = getCache(msg.getFromUserName());
+        if (person == null) {
+            person.setOpenId(msg.getFromUserName());
+            person.setStatus(PersonStatusEnum.INIT);
+            setCache(msg.getFromUserName(), person);
+        }
+        return person;
     }
 }

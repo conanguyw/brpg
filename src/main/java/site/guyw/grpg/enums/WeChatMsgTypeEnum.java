@@ -1,4 +1,4 @@
-package site.guyw.grpg.common;
+package site.guyw.grpg.enums;
 
 import java.util.HashMap;
 import java.util.Map;

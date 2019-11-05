@@ -9,7 +9,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import site.guyw.grpg.enums.WeChatMsgTypeEnum;
+import site.guyw.grpg.enums.GameEnum;
+import site.guyw.grpg.enums.PersonStatusEnum;
 
 /**
  * 服务网关标注
@@ -18,11 +19,13 @@ import site.guyw.grpg.enums.WeChatMsgTypeEnum;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.TYPE })
-public @interface MsgGateway {
+public @interface GameGateway {
 
     /**
      * 网关方法
      * @return
      */
-    WeChatMsgTypeEnum method();
+    GameEnum method();
+
+
 }

@@ -1,28 +1,17 @@
 package site.guyw.grpg.controller;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import site.guyw.grpg.cache.Person;
-import site.guyw.grpg.cache.PersonRepository;
-import site.guyw.grpg.common.InMsgEntity;
-import site.guyw.grpg.common.OutMsgEntity;
-import site.guyw.grpg.common.WeChatMsgTypeEnum;
-import site.guyw.grpg.manager.gateway.DefaultGatewayServiceProvider;
-import site.guyw.grpg.service.dealMsg.DealWeChatMessageService;
 
-import javax.annotation.Resource;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.time.Duration;
-import java.util.Date;
+
+import static site.guyw.grpg.cache.SimpleCache.delSearchExpire;
 
 /**
  * @author conangu(顾永威)
@@ -31,7 +20,7 @@ import java.util.Date;
  */
 @Controller
 @EnableAutoConfiguration
-@EnableCaching
+@EnableScheduling
 @ComponentScan("site.guyw.grpg.*")
 public class WeChatController {
     private static String                 token     = "siteguywtoken";
@@ -135,6 +124,12 @@ public class WeChatController {
                 }
             }
         }
+    }
+
+
+    @Scheduled(cron = "0 * * * * ?" )
+    public void timerToCacheExpire(){
+        delSearchExpire();
     }
 
 

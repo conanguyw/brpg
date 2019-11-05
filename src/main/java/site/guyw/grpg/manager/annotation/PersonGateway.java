@@ -9,6 +9,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import site.guyw.grpg.enums.PersonStatusEnum;
 import site.guyw.grpg.enums.WeChatMsgTypeEnum;
 
 /**
@@ -18,11 +19,13 @@ import site.guyw.grpg.enums.WeChatMsgTypeEnum;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.TYPE })
-public @interface MsgGateway {
+public @interface PersonGateway {
 
     /**
      * 网关方法
      * @return
      */
-    WeChatMsgTypeEnum method();
+    PersonStatusEnum method();
+
+
 }

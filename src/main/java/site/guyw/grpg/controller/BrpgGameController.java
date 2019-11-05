@@ -1,14 +1,12 @@
 package site.guyw.grpg.controller;
 
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import site.guyw.grpg.cache.Person;
-import site.guyw.grpg.cache.PersonRepository;
 import site.guyw.grpg.common.InMsgEntity;
 import site.guyw.grpg.common.OutMsgEntity;
-import site.guyw.grpg.common.WeChatMsgTypeEnum;
+import site.guyw.grpg.enums.WeChatMsgTypeEnum;
 import site.guyw.grpg.manager.gateway.DefaultGatewayServiceProvider;
 import site.guyw.grpg.service.dealMsg.DealWeChatMessageService;
 
@@ -25,8 +23,7 @@ public class BrpgGameController {
     /** 服务网关提供商 */
     @Resource
     private DefaultGatewayServiceProvider gatewayServiceProvider;
-    @Resource
-    private PersonRepository personRepository;
+
     /**
      * 微信消息处理
      */
@@ -36,7 +33,7 @@ public class BrpgGameController {
 
         //获取接收的消息类型
 
-        DealWeChatMessageService messageService = gatewayServiceProvider.getService(WeChatMsgTypeEnum.getEnumByCode(msg.getMsgType()));
+        DealWeChatMessageService messageService = gatewayServiceProvider.getMsgService(WeChatMsgTypeEnum.getEnumByCode(msg.getMsgType()));
         return messageService.invoke(msg);
 
     }
@@ -48,7 +45,7 @@ public class BrpgGameController {
     @ResponseBody
     public Person person(@RequestParam("openid") String openid) {
 
-        return personRepository.getPersonByOpenid(openid);
+        return new Person();
     }
 
 }
